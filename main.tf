@@ -43,9 +43,13 @@ resource "aws_security_group" "web_security" {
   }
 }
 
-resource "aws_s3_bucket" "bucket_prefix" {
-  bucket_prefix = "terralab"
+resource "aws_s3_bucket" "bucket" {
+  bucket = "terralab2021071208165443720000024201"
   acl    = "private"
+  tags = {
+    Name        = "My bucket"
+    Environment = "Test"
+  }
 
   versioning {
     enabled = true
@@ -57,5 +61,14 @@ resource "aws_s3_bucket" "bucket_prefix" {
     }
 
   }
+}
+
+resource "aws_s3_bucket_object" "upload_file" {
+  bucket = "terralab2021071208165443720000024201"
+  key = "website.html"
+  content_type = "text/html"
+  source = "G:/Project/website.html"
+  acl = "private"
+  depends_on = [aws_s3_bucket.bucket]
 }
 
